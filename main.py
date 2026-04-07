@@ -29,7 +29,7 @@ import os
 # ─────────────────────────────────────────────────────────────────────────────
 # Imports from Author modules
 # ─────────────────────────────────────────────────────────────────────────────
-
+#As of right now Authors have not begun their parts and skeleton looks complete
 # TODO: uncomment and complete these import lines once Author 1 and Author 2
 #       have merged their modules into main.
 
