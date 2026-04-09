@@ -129,7 +129,7 @@ def seed_database(conn):
     # Choose a genre theme your team agrees on (hip-hop, jazz, Latin, K-pop, etc.)
     # TODO: replace placeholder data with your team's chosen artists
 
-    Artist = [
+    artists = [
         (1, "Zara Larsson", "Pop", "Solna, Stockholm County, Sweden"),
         (2, "Bad Bunny", "Pop", "Vega Baja, Puerto Rico"),
         (3, "Taylor Swift", "Pop", "Reading, Pennsylvania"),
@@ -140,7 +140,7 @@ def seed_database(conn):
 
     conn.executemany(
         "INSERT OR IGNORE INTO Artist VALUES (?, ?, ?, ?)",
-        Artist
+        artists
     )
 
     # ── Tracks ───────────────────────────────────────────────────────────────
@@ -149,7 +149,7 @@ def seed_database(conn):
     # duration_seconds: a 3-minute song = 180 seconds.
     # TODO: replace placeholder data with your team's chosen tracks (minimum 18)
 
-    Track = [
+    tracks = [
         (1, "Lush Life", 205, 1),
         (2, "Symphony", 202, 1),
         (3, "Never Forget You", 224, 1),
@@ -172,14 +172,14 @@ def seed_database(conn):
 
     conn.executemany(
         "INSERT OR IGNORE INTO Track VALUES (?, ?, ?, ?)",
-        Track
+        tracks
     )
 
     # ── Playlists ────────────────────────────────────────────────────────────
     # Columns: playlist_id, playlist_name, owner_name
     # TODO: replace placeholder data with your team's chosen playlists (minimum 4)
 
-    Playlist = [
+    playlists = [
         (1, "Favorite Hits", "Patrick"),
         (2, "Party Playlist", "Syeda"),
         (3, "Chill Songs","Dennise"),
@@ -188,7 +188,7 @@ def seed_database(conn):
 
     conn.executemany(
         "INSERT OR IGNORE INTO Playlist VALUES (?, ?, ?)",
-        Playlist
+        playlists
     )
 
     # ── PlaylistTrack ─────────────────────────────────────────────────────────
@@ -199,7 +199,7 @@ def seed_database(conn):
     # At least one artist must have 3+ tracks appearing across these assignments.
     # TODO: replace placeholder data with your team's chosen assignments (minimum 20)
 
-    PlaylistTrack = [
+    playlist_tracks = [
         (1, 1, 1), (1, 2, 2), (1, 7, 3), (1, 16, 4),
         (2, 4, 1), (2, 5, 2), (2, 10, 3), (2, 17, 4),
         (3, 3, 1), (3, 8, 2), (3, 13, 3), (3, 14, 4),
@@ -209,7 +209,7 @@ def seed_database(conn):
 
     conn.executemany(
         "INSERT OR IGNORE INTO PlaylistTrack VALUES (?, ?, ?)",
-        PlaylistTrack
+        playlist_tracks
     )
 
     conn.commit()
@@ -252,9 +252,9 @@ if __name__ == "__main__":
         "INSERT INTO Track (track_id, title, duration_seconds, artist_id) "
         "VALUES (999, 'Ghost Track', 210, 9999)"
         )
-        conn.commit()
-    except sqlite3.IntegrityError:
-        print("IntegrityError caught! Tried inserting a track with a non-existent artist. FK enforcement works.")
+    except sqlite3.IntegrityError as e:
+        print (f" IntegrityError caught: {e}")
+        print(" This error confirms that foreign key enforcement is active.")
     
     # ── 3c — Persist the RAM database to disk with .backup() ─────────────────
     # TODO: open a connection to "music.db" and call conn.backup(target_conn)
