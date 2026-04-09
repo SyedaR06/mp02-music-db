@@ -130,9 +130,12 @@ def seed_database(conn):
     # TODO: replace placeholder data with your team's chosen artists
 
     artists = [
-        # (artist_id, name, genre, origin_city),
-        (1, "TODO — Artist Name", "TODO — Genre", "TODO — City"),
-        # add at least 5 more rows ...
+        (1, "Zara Larsson", "Pop", "Solna, Stockholm County, Sweden"),
+        (2, "Bad Bunny", "Pop", "Vega Baja, Puerto Rico"),
+        (3, "Taylor Swift", "Pop", "Reading, Pennsylvania"),
+        (4, "Bruno Mars", "Pop", " Honolulu, Hawaii"),
+        (5, "Sabrina Carpenter", "Pop", "Quakertown, Pennsylvania"),
+        (6, "The Weeknd", "Pop", "Toronto, Ontario, Canada")
     ]
 
     conn.executemany(
@@ -147,9 +150,24 @@ def seed_database(conn):
     # TODO: replace placeholder data with your team's chosen tracks (minimum 18)
 
     tracks = [
-        # (track_id, title, duration_seconds, artist_id),
-        (1, "TODO — Track Title", 200, 1),
-        # add at least 17 more rows ...
+        (1, "Lush Life", 205, 1),
+        (2, "Symphony", 202, 1),
+        (3, "Never Forget You", 224, 1),
+        (4, "Baile Inolvidable",368, 2),
+        (5, "DtMF", 195, 2),
+        (6, "Safaera", 295, 2),
+        (7, "All Too Well (10 Minute Version)", 600, 3),
+        (8, "Cruel Summer", 178, 3),
+        (9, "Blank Space", 231, 3),
+        (10, "Die With A Smile", 251, 4),
+        (11, "Just The Way You Are", 221, 4),
+        (12, "Uptown Funk", 270, 4),
+        (13, "Espresso", 175, 5),
+        (14, "Please Please Please", 186, 5),
+        (15, "Taste", 157, 5),
+        (16, "Blinding Lights", 202, 6),
+        (17, "Starboy", 230, 6),
+        (18, "The Hills", 242, 6),
     ]
 
     conn.executemany(
@@ -162,9 +180,10 @@ def seed_database(conn):
     # TODO: replace placeholder data with your team's chosen playlists (minimum 4)
 
     playlists = [
-        # (playlist_id, playlist_name, owner_name),
-        (1, "TODO — Playlist Name", "TODO — Owner"),
-        # add at least 3 more rows ...
+        (1, "Favorite Hits", "Patrick"),
+        (2, "Party Playlist", "Syeda"),
+        (3, "Chill Songs","Dennise"),
+        (4, "Workout Playlist","Amelie")
     ]
 
     conn.executemany(
@@ -181,9 +200,11 @@ def seed_database(conn):
     # TODO: replace placeholder data with your team's chosen assignments (minimum 20)
 
     playlist_tracks = [
-        # (playlist_id, track_id, position),
-        (1, 1, 1),
-        # add at least 19 more rows ...
+        (1, 1, 1), (1, 2, 2), (1, 7, 3), (1, 16, 4),
+        (2, 4, 1), (2, 5, 2), (2, 10, 3), (2, 17, 4),
+        (3, 3, 1), (3, 8, 2), (3, 13, 3), (3, 14, 4),
+        (4, 6, 1), (4, 9, 2), (4, 11, 3), (4, 12, 4),
+        (4, 15, 5), (2, 18, 5), (1, 5, 5), (3, 1, 5)
     ]
 
     conn.executemany(
@@ -227,14 +248,14 @@ if __name__ == "__main__":
     # Your code here:
     print("\nIntegrityError demonstration:")
     try:
-        # TODO: write the INSERT statement that should fail
-        conn.execute("INSERT INTO Track VALUES (999, 'Ghost Track', 210, 9999)")
-        print("  Insert succeeded — did you enable PRAGMA foreign_keys = ON?")
+        conn.execute(
+        "INSERT INTO Track (track_id, title, duration_seconds, artist_id) "
+        "VALUES (999, 'Ghost Track', 210, 9999)"
+        )
     except sqlite3.IntegrityError as e:
-        # TODO: print a message that identifies which constraint was violated
-        print(f"  IntegrityError caught: {e}")
-        print("  This error confirms that foreign key enforcement is active.")
-
+        print (f" IntegrityError caught: {e}")
+        print(" This error confirms that foreign key enforcement is active.")
+    
     # ── 3c — Persist the RAM database to disk with .backup() ─────────────────
     # TODO: open a connection to "music.db" and call conn.backup(target_conn)
     #       to write a permanent copy of the in-memory database to disk.
@@ -243,9 +264,7 @@ if __name__ == "__main__":
     # Your code here:
     print("\nPersisting database to music.db ...")
     DB_PATH = "music.db"
-    target_conn = sqlite3.connect(DB_PATH)
-    conn.backup(target_conn)
-    target_conn.close()
-    conn.close()
-    print(f"  Backup complete.  File size: {os.path.getsize(DB_PATH):,} bytes")
-    print(f"  Reopen with:  sqlite3.connect('{DB_PATH}')")
+    target = sqlite3.connect("music.db")
+    conn.backup(target)
+    target.close()
+    print("Database has been written to music.db")
