@@ -86,7 +86,7 @@ def get_playlist_tracks(conn, playlist_name):
         JOIN
             Playlist p ON pt.playlist_id = p.playlist_id
         WHERE 
-            p.playlist_name IS NULL
+            p.playlist_name IS ?
         ORDER BY
             pt.position ASC;
     """
