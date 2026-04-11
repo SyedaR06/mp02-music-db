@@ -73,10 +73,10 @@ def get_playlist_tracks(conn, playlist_name):
     #       before implementation.  The ? placeholder must match playlist_name.
     query = """
         SELECT 
-            Track.title AS title, 
-            Artist.name AS artist_name,
-            Track.duration_seconds AS duration_seconds, 
-            PlaylistTrack.position AS position
+            t.title, 
+            a.name,
+            t.duration_seconds, 
+            pt.position
         FROM
             PlaylistTrack as pt
         JOIN
@@ -130,9 +130,9 @@ def get_tracks_on_no_playlist(conn):
     # Your query here:
     query = """
         SELECT
-            Track.track_id AS track_id,
-            Track.title AS title, 
-            Artist.name AS artist_name,
+            t.track_id,
+            t.title,
+            a.name AS artist_name
         FROM
             Track t
         JOIN
@@ -184,8 +184,8 @@ def get_most_added_track(conn):
     # Your query here:
     query = """
         SELECT
-            Track.title AS title, 
-            Artist.name AS artist_name,
+            t.title, 
+            a.name,
             COUNT(*) AS playlist_count
         FROM PlaylistTrack pt
         JOIN   
@@ -256,10 +256,6 @@ def get_playlist_durations(conn):
             p.playlist_id
         ORDER BY
             total_minutes DESC
-
-        -- TODO: replace this comment with your SELECT statement
-        SELECT 'TODO' AS playlist_name, 0.0 AS total_minutes
-        WHERE 1 = 0
     """
     return conn.execute(query).fetchall()
 
